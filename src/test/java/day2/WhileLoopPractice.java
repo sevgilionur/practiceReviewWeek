@@ -35,6 +35,9 @@ public class WhileLoopPractice {
             }
         }
 
+        System.out.println("-----------------------------------------------------");
+
+
 
     }
 
