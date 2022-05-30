@@ -1,11 +1,86 @@
 package day4;
 
+import java.util.Arrays;
+
 public class CustomMethodsPractice2 {
 
     public static void main(String[] args) {
 
+        String reverse = reverse("Java");
 
+        System.out.println(reverse);
 
+        boolean r = isPalindrome("Hakan");
+
+        System.out.println(r);
+
+        int[] arr ={10, 20, 30, 40, 50, 60};
+
+        int[] result = removeElement(arr, 2);
+
+        System.out.println(Arrays.toString(result));
+
+        int[] array ={1,1,1,1,1,2,2};
+
+        int frequency = frequencyOfNumber(array, 1);
+
+        System.out.println(frequency);
+
+    }
+
+    public static String reverse(String str){
+
+        String result = "";
+
+        for (int i = str.length()-1; i >=0 ; i--) {
+
+            result+=str.charAt(i);
+
+        }
+        return result;
+    }
+
+    public static boolean isPalindrome(String str){
+
+        String result = reverse(str);
+
+        return result.equalsIgnoreCase(str);
+
+    }
+
+    public static int[] removeElement(int[] arr, int index){
+
+        int[] result = new int[arr.length-1];
+
+        int j = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+
+            if(i == index){
+
+                continue;
+            }else {
+
+                result[j++]+=arr[i];
+            }
+
+        }
+        return result;
+    }
+
+    public static int frequencyOfNumber(int[] arr, int number){
+
+        int frequency = 0;
+
+        for (int each : arr) {
+
+            if(each==number){
+
+                frequency++;
+
+            }
+        }
+        return frequency;
 
     }
 
