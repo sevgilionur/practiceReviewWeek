@@ -87,7 +87,7 @@ public class CustomMethodsPractice2 {
 
 }
 
-/*
+/**
     1. create a method named reverse that passes one string parameter, the method can return the reversed string
 
 				Ex:
