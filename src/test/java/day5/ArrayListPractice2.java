@@ -78,33 +78,36 @@ public class ArrayListPractice2 {
 
         System.out.println("------------------------------");
 
+        
 
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
 
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
