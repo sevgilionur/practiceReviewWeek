@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utility.ConfigurationReader;
@@ -40,6 +41,34 @@ public class OscarTask1 {
         WebElement goToCartButton = Driver.getDriver().findElement(By.xpath("//a[@class='a-button-text']"));
 
         goToCartButton.click();
+
+
+        WebElement totalPrice = Driver.getDriver().findElement(By.xpath("//span[@id='sc-subtotal-amount-buybox']/span"));
+        WebElement quantity = Driver.getDriver().findElement(By.xpath("//span[@class='a-dropdown-prompt']"));
+
+        String expectedPrice = totalPrice.getText();
+        String actualPrice = totalPrice.getText();
+
+        String expectedQuantity = "2";
+        String actualQuantity = quantity.getText();
+
+        Assert.assertEquals(expectedPrice, actualPrice, "Price is wrong");
+        Assert.assertEquals(expectedQuantity,actualQuantity, "Quantity is wrong");
+
+        WebElement quantityButton2 = Driver.getDriver().findElement(By.xpath("//span[@class='a-button a-button-dropdown quantity']"));
+        quantityButton2.click();
+
+        WebElement selectQuantity = Driver.getDriver().findElement(By.xpath("//li[@aria-labelledby='quantity_1']"));
+        selectQuantity.click();
+
+        WebElement quantityReduce = Driver.getDriver().findElement(By.xpath("//span[@class='a-dropdown-prompt']"));
+
+        String actualQuantity1 = "1";
+        String expectedQuantity1 = quantityReduce.getText();
+
+        Assert.assertEquals(actualQuantity1, expectedQuantity1, "Quantity is wrong");
+
+
 
 
     }
