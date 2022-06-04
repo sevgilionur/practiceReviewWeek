@@ -1,11 +1,48 @@
 package Selenium;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import utility.ConfigurationReader;
+import utility.Driver;
 
 public class OscarTask1 {
 
+    @Test
+    public void amazonTest(){
+
+        Driver.getDriver().get("https://amazon.com");
+
+        WebElement searchButton = Driver.getDriver().findElement((By.xpath("//input[@type='text']")));
+
+        searchButton.sendKeys(ConfigurationReader.getProperty("searchValue") + Keys.ENTER);
+
+        WebElement firstElement = Driver.getDriver().findElement(By.xpath("//div[@class='s-main-slot s-result-list s-search-results sg-row']//h2//a[1]"));
+
+        firstElement.click();
+
+        WebElement quantityButton = Driver.getDriver().findElement(By.xpath("//span[.='Qty:']"));
+
+        quantityButton.click();
+
+        WebElement select2 = Driver.getDriver().findElement(By.xpath("//a[.='2 ']"));
+
+        select2.click();
+
+        WebElement addToCartButton = Driver.getDriver().findElement(By.xpath("//input[@id='add-to-cart-button']"));
+
+        addToCartButton.click();
+
+        WebElement goToCartButton = Driver.getDriver().findElement(By.xpath("//a[@class='a-button-text']"));
+
+        goToCartButton.click();
 
 
+    }
 
 
 }
