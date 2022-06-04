@@ -5,7 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utility.ConfigurationReader;
@@ -13,62 +15,87 @@ import utility.Driver;
 
 public class OscarTask1 {
 
+    public static Double totalPrice() {
+        try {
+            Double priceDecimalPart = Double.parseDouble(Driver.getDriver().findElement(By.xpath("(//span[@class='a-price-fraction'])[1]")).getText());
+
+            Double price = Double.parseDouble(Driver.getDriver().findElement(By.xpath("(//span[@class='a-price-whole'])[1]")).getText());
+
+            return price + (priceDecimalPart/100);
+        } catch (Exception e) {
+
+            String priceText = Driver.getDriver().findElement(By.xpath("(//span[@class='a-size-medium a-color-base sc-price sc-white-space-nowrap'])[1]")).getText().substring(1);
+
+            Double price = Double.parseDouble(priceText);
+
+            return price;
+        }
+    }
+
+
+    WebDriver driver = Driver.getDriver();
+
+    @BeforeMethod
+    public void setUp() {
+
+
+//    1.	Go to https://www.amazon.com
+
+        driver.get(ConfigurationReader.getProperty("env"));
+    }
+
+
+
     @Test
-    public void amazonTest(){
+    public void amazonTask() {
 
-        Driver.getDriver().get("https://amazon.com");
+//    2.	Search for "hats for men" (Call from Configuration.properties file)
 
-        WebElement searchButton = Driver.getDriver().findElement((By.xpath("//input[@type='text']")));
+        WebElement searchBox = driver.findElement(By.xpath("//input[@id='twotabsearchtextbox']"));
+        searchBox.sendKeys(ConfigurationReader.getProperty("searchValue") + Keys.ENTER);
 
-        searchButton.sendKeys(ConfigurationReader.getProperty("searchValue") + Keys.ENTER);
-
-        WebElement firstElement = Driver.getDriver().findElement(By.xpath("//div[@class='s-main-slot s-result-list s-search-results sg-row']//h2//a[1]"));
-
-        firstElement.click();
-
-        WebElement quantityButton = Driver.getDriver().findElement(By.xpath("//span[.='Qty:']"));
-
-        quantityButton.click();
-
-        WebElement select2 = Driver.getDriver().findElement(By.xpath("//a[.='2 ']"));
-
-        select2.click();
-
-        WebElement addToCartButton = Driver.getDriver().findElement(By.xpath("//input[@id='add-to-cart-button']"));
-
-        addToCartButton.click();
-
-        WebElement goToCartButton = Driver.getDriver().findElement(By.xpath("//a[@class='a-button-text']"));
-
-        goToCartButton.click();
+//    3.	Add the first hat appearing to Cart with quantity 2
 
 
-        WebElement totalPrice = Driver.getDriver().findElement(By.xpath("//span[@id='sc-subtotal-amount-buybox']/span"));
-        WebElement quantity = Driver.getDriver().findElement(By.xpath("//span[@class='a-dropdown-prompt']"));
+        driver.findElement(By.xpath("(//a[@class='a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal'])[1]")).click();
 
-        String expectedPrice = totalPrice.getText();
-        String actualPrice = totalPrice.getText();
+        Double oneItemPrice = Double.parseDouble(Driver.getDriver().findElement(By.xpath("//span[@class='a-price a-text-price a-size-medium']/span[@aria-hidden='true']")).getText().substring(1));
 
-        String expectedQuantity = "2";
-        String actualQuantity = quantity.getText();
+        Select selectQuantity = new Select(driver.findElement(By.xpath("//select[@name='quantity']")));
 
-        Assert.assertEquals(expectedPrice, actualPrice, "Price is wrong");
-        Assert.assertEquals(expectedQuantity,actualQuantity, "Quantity is wrong");
+        selectQuantity.selectByValue("2");
 
-        WebElement quantityButton2 = Driver.getDriver().findElement(By.xpath("//span[@class='a-button a-button-dropdown quantity']"));
-        quantityButton2.click();
+        WebElement addToChartButton = driver.findElement(By.xpath("//input[@id='add-to-cart-button']"));
 
-        WebElement selectQuantity = Driver.getDriver().findElement(By.xpath("//li[@aria-labelledby='quantity_1']"));
-        selectQuantity.click();
+        addToChartButton.click();
 
-        WebElement quantityReduce = Driver.getDriver().findElement(By.xpath("//span[@class='a-dropdown-prompt']"));
+//    4.	Open cart and assert that the total price and quantity are correct
 
-        String actualQuantity1 = "1";
-        String expectedQuantity1 = quantityReduce.getText();
+        driver.findElement(By.xpath("//div[@id='nav-cart-count-container']")).click();
 
-        Assert.assertEquals(actualQuantity1, expectedQuantity1, "Quantity is wrong");
+        Double expectedPrice = oneItemPrice * 2;
+        Double actualPrice = totalPrice();
+        Assert.assertEquals(actualPrice,expectedPrice);
 
+        int expectedQuantity = 2;
+        int actualQuantity = Integer.parseInt(driver.findElement(By.xpath("//span[@class='a-dropdown-prompt']")).getText());
 
+        Assert.assertEquals(actualQuantity, expectedQuantity);
+
+//    5.	Reduce the quantity from 2 to 1 in Cart for the item selected in the step 3
+
+        Select itemQuantity = new Select(driver.findElement(By.xpath("//select[@name='quantity']")));
+
+        itemQuantity.selectByValue("1");
+
+//    6.	Assert that the total price and quantity has been correctly changed
+
+        expectedPrice = oneItemPrice;
+        actualPrice = totalPrice();
+        Assert.assertEquals(actualPrice,expectedPrice);
+
+        expectedQuantity = 1;
+        actualQuantity = Integer.parseInt(driver.findElement(By.xpath("//span[@class='a-dropdown-prompt']")).getText());
 
 
     }
