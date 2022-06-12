@@ -2,35 +2,34 @@ package com.cydeo.tests.day2;
 
 import com.cydeo.utilities.BrowserUtils;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.TimeUnit;
 
-public class Task1 {
+public class HomeWork2 {
 
     public static void main(String[] args) {
 
-        //TC #1: Cydeo practice tool verifications
         //1. Open Chrome browser
-        //2. Go to https://practice.cydeo.com
-        //3. Verify URL contains
-        //Expected: cydeo
-        //4. Verify title:
-        // Expected: Practice
+        //2. Go to http://zero.webappsecurity.com/login.html
+        //3. Verify header text
+        //Expected: “Log in to ZeroBank”
 
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-        driver.get("https://practice.cydeo.com");
+        driver.get("http://zero.webappsecurity.com/login.html");
 
-        BrowserUtils.containsURLWord(driver, "cydeo");
+        WebElement headerText = driver.findElement(By.tagName("h3"));
 
-        BrowserUtils.titleVerification(driver, "Practice");
+        BrowserUtils.headerTextVerification(headerText, "Log in ZeroBank" );
 
-        driver.close();
+
 
     }
 }

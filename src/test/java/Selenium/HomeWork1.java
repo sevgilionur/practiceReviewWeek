@@ -2,35 +2,39 @@ package com.cydeo.tests.day2;
 
 import com.cydeo.utilities.BrowserUtils;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.security.Key;
 import java.util.concurrent.TimeUnit;
 
-public class Task1 {
+public class HomeWork1 {
 
     public static void main(String[] args) {
 
-        //TC #1: Cydeo practice tool verifications
         //1. Open Chrome browser
-        //2. Go to https://practice.cydeo.com
-        //3. Verify URL contains
-        //Expected: cydeo
+        //2. Go to https://www.etsy.com
+        //3. Search for “wooden spoon”
         //4. Verify title:
-        // Expected: Practice
+        //Expected: “Wooden spoon | Etsy”
 
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-        driver.get("https://practice.cydeo.com");
+        driver.get("https://www.etsy.com");
 
-        BrowserUtils.containsURLWord(driver, "cydeo");
+        WebElement inputBox = driver.findElement(By.name("search_query"));
+        inputBox.sendKeys("wooden spoon" + Keys.ENTER);
 
-        BrowserUtils.titleVerification(driver, "Practice");
+        BrowserUtils.titleVerification(driver, "Wooden spoon | Etsy");
 
         driver.close();
+
 
     }
 }
